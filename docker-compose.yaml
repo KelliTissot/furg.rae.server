@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+
+  node-red:
+    build: ./services/nodered/.
+    environment:
+      - TZ=America/Sao_Paulo
+    ports:
+      - "1880:1880" 
+    volumes:
+      - ./volumes/data:/data
+
+  mosquitto:
+    image: eclipse-mosquitto
+    user: "1883"
+    ports:
+      - 1883:1883
+    volumes:
+      - ./volumes/mosquitto/data:/mosquitto/data
+      - ./volumes/mosquitto/log:/mosquitto/log
+      - ./mosquitto/config:/mosquitto/config 
+
+  influxdb:
+    image: influxdb:2.6
+    ports: 
+      - 8086:8086
+    volumes: 
+      - ./volumes/influxdb:/var/lib/influxdb2
