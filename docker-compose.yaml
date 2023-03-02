@@ -10,6 +10,7 @@ services:
       - "1880:1880" 
     volumes:
       - ./volumes/data:/data
+    restart: always
 
   mosquitto:
     image: eclipse-mosquitto
@@ -20,10 +21,12 @@ services:
       - ./volumes/mosquitto/data:/mosquitto/data
       - ./volumes/mosquitto/log:/mosquitto/log
       - ./mosquitto/config:/mosquitto/config 
+    restart: always
 
   influxdb:
     image: influxdb:2.6
     ports: 
       - 8086:8086
     volumes: 
-      - ./volumes/influxdb:/var/lib/influxdb2
+      - ./volumes/influxdb:/var/lib/influxdb
+    restart: always
