@@ -53,6 +53,7 @@ import paho.mqtt.client as mqtt #https://www.eclipse.org/paho/index.php?page=cli
 
 
 mqttBroker ="localhost" 
+device_id = "elevador5"
 
 
 class CabinEvent:
@@ -62,8 +63,8 @@ class CabinEvent:
     
     '''
     # Class variable.
-    autoEvent  = False
-    startEvent = False
+    autoEvent  = True
+    startEvent = True
 
     def __init__(self, v0, t0, dt, tk, Tamb=22, Tss=80, tau=10):
         self.t0 = t0     # event start time
@@ -187,9 +188,9 @@ if __name__ == '__main__':
                 else:
                     print(".")
 
-                client.publish("motor/temperature", T)
-                client.publish("cabin/velocity", V)
-                client.publish("cabin/position", x)
+                client.publish(f"device/{device_id}/motor/temperature", T)
+                client.publish(f"device/{device_id}/cabin/velocity", V)
+                client.publish(f"device/{device_id}/cabin/position", x)
                 
                 time.sleep(samplingtime)
 

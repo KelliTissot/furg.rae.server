@@ -41,7 +41,7 @@ services:
     restart: always
 
   grafana:
-    image: grafana/grafana:8.2.6
+    image: grafana:8.2.6
     ports:
       - 3000:3000
     volumes: 
