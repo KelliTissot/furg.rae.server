@@ -2,14 +2,14 @@ version: "3.7"
 
 services:
 
-  portainer:
-    image: portainer/portainer-ce:latest
-    ports:
-        - 9443:9443
-    volumes:
-      - ./volumes/portainer:/data
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: always
+  # portainer:
+  #   image: portainer/portainer-ce:latest
+  #   ports:
+  #       - 9443:9443
+  #   volumes:
+  #     - ./volumes/portainer:/data
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   restart: always
 
   node-red:
     build: ./services/nodered/.
@@ -41,9 +41,30 @@ services:
     restart: always
 
   grafana:
-    image: grafana:8.2.6
+    image: grafana/grafana:8.2.6
     ports:
-      - 3000:3000
+      - 80:3000
     volumes: 
       - ./volumes/grafana:/var/lib/grafana
     restart: always
+
+  management-center:
+    image: cedalo/management-center:2.5.9
+    environment:
+      # Do not change these settings for the moment!
+      CEDALO_MC_BROKER_ID: mosquitto-2.0
+      CEDALO_MC_BROKER_NAME: Mosquitto 2.0
+      CEDALO_MC_BROKER_URL: mqtt://mosquitto:1883
+      CEDALO_MC_BROKER_USERNAME: cedalo
+      CEDALO_MC_BROKER_PASSWORD: eAkX29UnAs
+      CEDALO_MC_PROXY_CONFIG_DIR: /management-center/config/config.json
+      CEDALO_MC_USERNAME: cedalo
+      CEDALO_MC_PASSWORD: admin
+    ports:
+      - 8088:8088
+    expose:
+        - 8088
+    depends_on:
+      - mosquitto
+    volumes:
+      - ./config:/management-center/backend/config
